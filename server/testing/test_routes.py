@@ -2,7 +2,7 @@ import json
 from server.extensions import db
 from server.models.user import User
 from flask_jwt_extended import create_access_token
-
+from datetime import date
 
 def test_register_user(client):
     res = client.post("/register", json={

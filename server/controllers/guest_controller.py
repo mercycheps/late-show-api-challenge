@@ -1,14 +1,12 @@
-import os
-
-SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI")
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "super-secret")
+from flask import Blueprint, jsonify
+from server.models.guest import Guest
 
 
-from flask_jwt_extended import jwt_required, get_jwt_identity
+guest_bp = Blueprint("guests", __name__, url_prefix="/guests")
 
-@app.route("/appearances", methods=["POST"])
-@jwt_required()
-def create_appearance():
-    current_user = get_jwt_identity()
-    ...
+
+
+@guest_bp.route("/", methods=["GET"])
+def get_guests():
+    guests = Guest.query.all()
+    return jsonify([guest.to_dict() for guest in guests]), 200
