@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "d1f0c524-aaaa-bbbb-cccc-123456789abc",
     "name": "Late Show API Challenge",
-    "description": "Postman collection to test all Late Show API routes with authentication",
+    "description": "Test all routes for Late Show API with JWT auth and PostgreSQL backend",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -10,8 +10,14 @@
       "name": "Register User",
       "request": {
         "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
-        "url": { "raw": "{{base_url}}/register", "host": ["{{base_url}}"], "path": ["register"] },
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/register",
+          "host": ["{{base_url}}"],
+          "path": ["register"]
+        },
         "body": {
           "mode": "raw",
           "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"password123\"\n}"
@@ -22,8 +28,14 @@
       "name": "Login User",
       "request": {
         "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
-        "url": { "raw": "{{base_url}}/login", "host": ["{{base_url}}"], "path": ["login"] },
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/login",
+          "host": ["{{base_url}}"],
+          "path": ["login"]
+        },
         "body": {
           "mode": "raw",
           "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"password123\"\n}"
@@ -33,13 +45,16 @@
         {
           "listen": "test",
           "script": {
+            "type": "text/javascript",
             "exec": [
-              "const data = pm.response.json();",
-              "if (data.access_token) {",
-              "    pm.environment.set(\"jwt\", data.access_token);",
+              "const jsonData = pm.response.json();",
+              "if (jsonData.access_token) {",
+              "    pm.environment.set(\"jwt\", jsonData.access_token);",
+              "    console.log(\"Token saved to environment\");",
+              "} else {",
+              "    console.warn(\"No token found in response\");",
               "}"
-            ],
-            "type": "text/javascript"
+            ]
           }
         }
       ]
@@ -49,7 +64,11 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": { "raw": "{{base_url}}/episodes", "host": ["{{base_url}}"], "path": ["episodes"] }
+        "url": {
+          "raw": "{{base_url}}/episodes",
+          "host": ["{{base_url}}"],
+          "path": ["episodes"]
+        }
       }
     },
     {
@@ -69,11 +88,7 @@
       "request": {
         "method": "DELETE",
         "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer {{jwt}}",
-            "type": "text"
-          }
+          { "key": "Authorization", "value": "Bearer {{jwt}}", "type": "text" }
         ],
         "url": {
           "raw": "{{base_url}}/episodes/1",
@@ -87,7 +102,11 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": { "raw": "{{base_url}}/guests", "host": ["{{base_url}}"], "path": ["guests"] }
+        "url": {
+          "raw": "{{base_url}}/guests",
+          "host": ["{{base_url}}"],
+          "path": ["guests"]
+        }
       }
     },
     {
@@ -98,10 +117,14 @@
           { "key": "Content-Type", "value": "application/json" },
           { "key": "Authorization", "value": "Bearer {{jwt}}" }
         ],
-        "url": { "raw": "{{base_url}}/appearances", "host": ["{{base_url}}"], "path": ["appearances"] },
+        "url": {
+          "raw": "{{base_url}}/appearances",
+          "host": ["{{base_url}}"],
+          "path": ["appearances"]
+        },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"guest_id\": 1,\n  \"episode_id\": 1,\n  \"rating\": 4\n}"
+          "raw": "{\n  \"guest_id\": 1,\n  \"episode_id\": 1,\n  \"rating\": 5\n}"
         }
       }
     }
