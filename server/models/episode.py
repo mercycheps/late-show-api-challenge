@@ -8,3 +8,11 @@ class Episode(db.Model):
     number = db.Column(db.Integer, nullable=False)
 
     appearances = db.relationship("Appearance", backref="episode", cascade="all, delete-orphan")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "date": self.date,
+            "number": self.number,
+            "appearances": [appearance.id for appearance in self.appearances]
+        }

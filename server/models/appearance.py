@@ -9,4 +9,10 @@ class Appearance(db.Model):
     guest_id = db.Column(db.Integer, db.ForeignKey('guests.id'), nullable=False)
     episode_id = db.Column(db.Integer, db.ForeignKey('episodes.id'), nullable=False)
 
-    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "rating": self.rating,
+            "guest_id": self.guest_id,
+            "episode_id": self.episode_id
+        }
